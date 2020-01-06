@@ -3,6 +3,7 @@ package com.example.myweather;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     TextView weatherTextView;
     TextView tempTextView;
     String apiRequest = "http://api.openweathermap.org/data/2.5/weather?q=";
-    String apiKey = "&APPID=";
+    String apiKey = "&APPID=6dda82f9dc99c1c9af29e42308e26de1";
 
 
     @Override
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         tempTextView = findViewById(R.id.tempTextView);
 
     }
+
 
     public void sendRequest(View view) {
 
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-                weatherTextView.setText(weatherString);
+                //weatherTextView.setText(weatherString);
 
                 String mainInfo = jsonObject.getString("main");
                 JSONObject mainObj = new JSONObject(mainInfo);
@@ -123,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 String tempMax = mainObj.getString("temp_max");
 
                 double tempCel = convertToCel(Double.parseDouble(temp));
+
                 double tempMinCel = convertToCel(Double.parseDouble(tempMin));
                 double tempMaxCel = convertToCel(Double.parseDouble(tempMax));
 
@@ -131,12 +134,14 @@ public class MainActivity extends AppCompatActivity {
                 tempMaxCel = tempRound(tempMaxCel);
 
                 tempString = "Temperature: " + Double.toString(tempCel) + "\nMinimum Temperature: " + Double.toString(tempMinCel) + "\nMaximum Temperature: " + Double.toString(tempMaxCel);
-
+                weatherString += "\n"+ tempString;
+                weatherTextView.setText(weatherString);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+            apiRequest = "http://api.openweathermap.org/data/2.5/weather?q="; //So you could request again
         }
     }
 
